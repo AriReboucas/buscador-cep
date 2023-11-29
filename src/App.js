@@ -1,22 +1,20 @@
-import { useState } from 'react';
+import { useState } from "react";
 import { FiSearch } from "react-icons/fi";
-import './styles.css';
-import api from './services/api';
-
+import "./styles.css";
+import api from "./services/api";
 
 function App() {
-
-  const [input, setInput] = useState('')
+  const [input, setInput] = useState("");
 
   async function handleSearch() {
-    if (input === '') {
-      alert("Preencha algum CEP!")
+    if (input === "") {
+      alert("Preencha algum CEP!");
       return;
     }
 
     try {
-      const response = await api.get('${input}/json');
-      console.log(response)
+      const response = await api.get(`${input}/json`);
+      console.log(response);
     } catch {
       alert("Ops... erro ao buscar o CEP digitado!");
     }
@@ -45,9 +43,7 @@ function App() {
         <span>Complemento</span>
         <span>Vl Prel</span>
         <span>São Paulo - SP</span>
-
       </main>
-
     </div>
   );
 }
