@@ -7,6 +7,12 @@ function App() {
   const [input, setInput] = useState("");
   const [cep, setCep] = useState({});
 
+  function handleKeyPress(event) {
+    if (event.key === "Enter") {
+      handleSearch();
+    }
+  }
+
   async function handleSearch() {
     if (input === "") {
       alert("Preencha algum CEP!");
@@ -17,7 +23,6 @@ function App() {
       const response = await api.get(`${input}/json`);
       setCep(response.data);
       setInput("");
-
     } catch {
       alert("Ops... erro ao buscar o CEP digitado!");
       setInput("");
@@ -34,6 +39,7 @@ function App() {
           placeholder="Digite seu CEP..."
           value={input}
           onChange={(e) => setInput(e.target.value)}
+          onKeyPress={handleKeyPress}
         />
 
         <button className="buttonSearch" onClick={handleSearch}>
@@ -47,11 +53,11 @@ function App() {
           <span>{cep.logradouro}</span>
           <span>Complemento: {cep.complemento}</span>
           <span>{cep.bairro}</span>
-          <span>{cep.localidade} - {cep.uf}</span>
-
+          <span>
+            {cep.localidade} - {cep.uf}
+          </span>
         </main>
       )}
-
     </div>
   );
 }
