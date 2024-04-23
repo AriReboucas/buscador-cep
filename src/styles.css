@@ -94,3 +94,15 @@
     }
 
 }
+
+.error-message {
+    background-color: rgb(247, 84, 84);
+    border-radius: 4px;
+    border: none;
+    padding: 16px;
+    margin: 0 auto;
+    color: white;
+    position: absolute;
+    top: 50px;
+    right: 50px;
+}
