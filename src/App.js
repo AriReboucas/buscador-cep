@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { FiSearch } from "react-icons/fi";
 import { IMaskInput } from "react-imask";
-import { toast } from "react-toastify";
 import "./styles.css";
 import api from "./services/api";
 
