@@ -40,6 +40,7 @@ function App() {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyPress={handleKeyPress}
+          autoFocus
         />
 
         <button className="buttonSearch" onClick={handleSearch}>
