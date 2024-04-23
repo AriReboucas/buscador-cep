@@ -13,7 +13,7 @@ function App() {
 
   function handleKeyPress(event) {
     if (event.key === "Enter") {
-      handleSearch();
+      if (input.length === 9) handleSearch();
     }
   }
 
@@ -32,13 +32,19 @@ function App() {
       return;
     }
 
-    const response = await api.get(`${input}/json`);
-    if (response.data.erro) {
-      setErrorMessage("Ops... erro ao buscar o CEP digitado!");
+    try {
+      const response = await api.get(`${input}/json`);
+      if (response.data.erro) {
+        setErrorMessage("Ops... erro ao buscar o CEP digitado!");
+        setShowError(true);
+        setInput("");
+      } else {
+        setCep(response.data);
+        setInput("");
+      }
+    } catch {
+      setErrorMessage("Não foi possível realizar a busca!");
       setShowError(true);
-      setInput("");
-    } else {
-      setCep(response.data);
       setInput("");
     }
   }
