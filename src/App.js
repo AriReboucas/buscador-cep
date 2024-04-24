@@ -3,6 +3,7 @@ import { FiSearch } from "react-icons/fi";
 import { IMaskInput } from "react-imask";
 import "./styles.css";
 import api from "./services/api";
+import ReactGA from "react-ga4";
 
 function App() {
   const [input, setInput] = useState("");
@@ -11,6 +12,12 @@ function App() {
   const [showError, setShowError] = useState(false);
 
   function handleKeyPress(event) {
+    ReactGA.event({
+      category: "Buscar CEP",
+      action: "onKeyPress",
+      label: input, // optional
+    });
+
     if (event.key === "Enter") {
       if (input.length === 9) handleSearch();
     }
@@ -48,6 +55,26 @@ function App() {
     }
   }
 
+  function handleClick() {
+    ReactGA.event({
+      category: "Buscar CEP",
+      action: "onClick",
+      label: input, // optional
+    });
+
+    handleSearch();
+  }
+
+  function handleTyping(e) {
+    if (input.length === 9)
+      ReactGA.event({
+        category: "Buscar CEP",
+        action: "onTyping",
+      });
+
+    setInput(e.target.value);
+  }
+
   return (
     <div className="container">
       <h1 className="title">Buscador CEP</h1>
@@ -57,12 +84,12 @@ function App() {
           mask="00000-000"
           placeholder="Digite o CEP..."
           value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyPress={handleKeyPress}
+          onChange={(e) => handleTyping(e)}
+          onKeyDown={handleKeyPress}
           autoFocus
         />
 
-        <button className="buttonSearch" onClick={handleSearch}>
+        <button className="buttonSearch" onClick={handleClick}>
           <FiSearch size={25} color="#FFF" />
         </button>
 
