@@ -22,7 +22,7 @@ function App() {
   function handleKeyDown(event) {
     ReactGA.event({
       category: "Buscar CEP",
-      action: "onKeyPress",
+      action: "onKeyDown",
       label: input,
     });
 
