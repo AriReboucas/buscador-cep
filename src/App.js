@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 
 function App() {
   const [cep, setCep] = useState({});
-  const [input, setInput] = useState("");
+  const [inputData, setInputData] = useState("");
   const [showError, setShowError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -23,35 +23,35 @@ function App() {
     ReactGA.event({
       category: "Buscar CEP",
       action: "onKeyDown",
-      label: input,
+      label: inputData,
     });
 
     if (event.key === "Enter") {
-      if (input.length === 9) handleSearch();
+      if (inputData.length === 9) handleSearch();
     }
   }
 
   async function handleSearch() {
-    if (input === "") {
+    if (inputData === "") {
       setErrorMessage("Preencha algum CEP!");
       setShowError(true);
       return;
     }
 
     try {
-      const response = await api.get(`${input}/json`);
+      const response = await api.get(`${inputData}/json`);
       if (response.data.erro) {
         setErrorMessage("Ops... erro ao buscar o CEP digitado!");
         setShowError(true);
-        setInput("");
+        setInputData("");
       } else {
         setCep(response.data);
-        setInput("");
+        setInputData("");
       }
     } catch {
       setErrorMessage("Não foi possível realizar a busca!");
       setShowError(true);
-      setInput("");
+      setInputData("");
     }
   }
 
@@ -59,20 +59,20 @@ function App() {
     ReactGA.event({
       category: "Buscar CEP",
       action: "onClick",
-      label: input, // optional
+      label: inputData,
     });
 
     handleSearch();
   }
 
   function handleTyping(e) {
-    if (input.length === 9)
+    if (inputData.length === 9)
       ReactGA.event({
         category: "Buscar CEP",
         action: "onTyping",
       });
 
-    setInput(e.target.value);
+    setInputData(e.target.value);
   }
 
   return (
@@ -83,7 +83,7 @@ function App() {
         <IMaskInput
           mask="00000-000"
           placeholder="Digite o CEP..."
-          value={input}
+          value={inputData}
           onChange={(e) => handleTyping(e)}
           onKeyDown={handleKeyDown}
           autoFocus
