@@ -1,35 +1,35 @@
-import { useEffect, useState } from "react";
-import { FiSearch } from "react-icons/fi";
-import { IMaskInput } from "react-imask";
 import "./styles.css";
-import api from "./services/api";
 import ReactGA from "react-ga4";
+import api from "./services/api";
+import { IMaskInput } from "react-imask";
+import { FiSearch } from "react-icons/fi";
+import { useEffect, useState } from "react";
 
 function App() {
-  const [input, setInput] = useState("");
   const [cep, setCep] = useState({});
-  const [errorMessage, setErrorMessage] = useState("");
+  const [input, setInput] = useState("");
   const [showError, setShowError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
-  function handleKeyPress(event) {
+  useEffect(() => {
+    if (showError) {
+      setTimeout(() => {
+        setShowError(false);
+      }, [3000]);
+    }
+  }, [showError]);
+
+  function handleKeyDown(event) {
     ReactGA.event({
       category: "Buscar CEP",
       action: "onKeyPress",
-      label: input, // optional
+      label: input,
     });
 
     if (event.key === "Enter") {
       if (input.length === 9) handleSearch();
     }
   }
-
-  useEffect(() => {
-    if (showError) {
-      setTimeout(() => {
-        setShowError(false);
-      }, [5000]);
-    }
-  }, [showError]);
 
   async function handleSearch() {
     if (input === "") {
@@ -85,7 +85,7 @@ function App() {
           placeholder="Digite o CEP..."
           value={input}
           onChange={(e) => handleTyping(e)}
-          onKeyDown={handleKeyPress}
+          onKeyDown={handleKeyDown}
           autoFocus
         />
 
