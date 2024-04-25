@@ -1,57 +1,72 @@
 import { useEffect, useState } from "react";
-import { FiSearch } from "react-icons/fi";
-import { IMaskInput } from "react-imask";
-import "./styles.css";
-import api from "./services/api";
 import ReactGA from "react-ga4";
+import { IMaskInput } from "react-imask";
+import { FiSearch } from "react-icons/fi";
+
+import api from "./services/api";
+
+import "./styles.css";
 
 function App() {
-  const [input, setInput] = useState("");
   const [cep, setCep] = useState({});
+  const [inputData, setInputData] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [showError, setShowError] = useState(false);
+  const [showErrorMsg, setShowErrorMsg] = useState(false);
 
-  function handleKeyPress(event) {
+  useEffect(() => {
+    if (showErrorMsg) {
+      setTimeout(() => {
+        hideMsg();
+      }, [3000]);
+    }
+  }, [showErrorMsg]);
+
+  function showError() {
+    setShowErrorMsg(true);
+  }
+
+  function hideMsg() {
+    setShowErrorMsg(false);
+  }
+
+  function handleKeyDown(event) {
     ReactGA.event({
       category: "Buscar CEP",
-      action: "onKeyPress",
-      label: input, // optional
+      action: "onKeyDown",
+      label: inputData,
     });
 
     if (event.key === "Enter") {
-      if (input.length === 9) handleSearch();
+      if (inputData.length === 9) handleSearch();
+      if (inputData === "") {
+        setErrorMessage("Preencha algum CEP!");
+        showError();
+        return;
+      }
     }
   }
 
-  useEffect(() => {
-    if (showError) {
-      setTimeout(() => {
-        setShowError(false);
-      }, [5000]);
-    }
-  }, [showError]);
-
   async function handleSearch() {
-    if (input === "") {
+    if (inputData === "") {
       setErrorMessage("Preencha algum CEP!");
-      setShowError(true);
+      showError();
       return;
     }
 
     try {
-      const response = await api.get(`${input}/json`);
+      const response = await api.get(`${inputData}/json`);
       if (response.data.erro) {
         setErrorMessage("Ops... erro ao buscar o CEP digitado!");
-        setShowError(true);
-        setInput("");
+        showError();
+        setInputData("");
       } else {
         setCep(response.data);
-        setInput("");
+        setInputData("");
       }
     } catch {
       setErrorMessage("Não foi possível realizar a busca!");
-      setShowError(true);
-      setInput("");
+      showError();
+      setInputData("");
     }
   }
 
@@ -59,20 +74,21 @@ function App() {
     ReactGA.event({
       category: "Buscar CEP",
       action: "onClick",
-      label: input, // optional
+      label: inputData,
     });
 
     handleSearch();
   }
 
   function handleTyping(e) {
-    if (input.length === 9)
+    if (inputData.length === 9)
       ReactGA.event({
         category: "Buscar CEP",
         action: "onTyping",
       });
 
-    setInput(e.target.value);
+    setInputData(e.target.value);
+    hideMsg();
   }
 
   return (
@@ -83,9 +99,9 @@ function App() {
         <IMaskInput
           mask="00000-000"
           placeholder="Digite o CEP..."
-          value={input}
+          value={inputData}
           onChange={(e) => handleTyping(e)}
-          onKeyDown={handleKeyPress}
+          onKeyDown={handleKeyDown}
           autoFocus
         />
 
@@ -93,7 +109,7 @@ function App() {
           <FiSearch size={25} color="#FFF" />
         </button>
 
-        {showError && <div className="error-message">{errorMessage}</div>}
+        {showErrorMsg && <div className="error-message">{errorMessage}</div>}
       </div>
 
       {Object.keys(cep).length > 0 && (
