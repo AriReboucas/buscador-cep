@@ -1,16 +1,22 @@
+body {
+    height: 100dvh;
+    width: 100%;
+    background: linear-gradient(#121212, #212b46);
+}
+
 .container {
-    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    background: linear-gradient(#121212, #212b46);
+    padding: 200px 16px;
 }
 
 .title {
     font-size: 85px;
     color: #fff;
     animation: flipTitle 2s;
+    text-align: center;
 }
 
 @keyframes flipTitle {
@@ -64,7 +70,7 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    background-color: #fff;
+    background-color: #e7e5e5;
     width: 500px;
     border-radius: 8px;
 }
@@ -79,9 +85,11 @@
     font-weight: bold;
 }
 
+
 @media (max-width: 620px) {
     .title {
-        font-size: 60px;
+        font-size: 40px;
+        text-align: center;
     }
 
     .main h2 {
@@ -89,11 +97,11 @@
     }
 
     .main {
-        width: 80%;
-        min-height: 250px;
+        width: 85%;
     }
 
 }
+
 
 .error-message {
     background-color: rgb(247, 84, 84);
