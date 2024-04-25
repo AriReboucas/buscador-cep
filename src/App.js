@@ -10,16 +10,24 @@ import "./styles.css";
 function App() {
   const [cep, setCep] = useState({});
   const [inputData, setInputData] = useState("");
-  const [showError, setShowError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [showErrorMsg, setShowErrorMsg] = useState(false);
 
   useEffect(() => {
-    if (showError) {
+    if (showErrorMsg) {
       setTimeout(() => {
-        setShowError(false);
+        hideMsg();
       }, [3000]);
     }
-  }, [showError]);
+  }, [showErrorMsg]);
+
+  function showError() {
+    setShowErrorMsg(true);
+  }
+
+  function hideMsg() {
+    setShowErrorMsg(false);
+  }
 
   function handleKeyDown(event) {
     ReactGA.event({
@@ -30,13 +38,18 @@ function App() {
 
     if (event.key === "Enter") {
       if (inputData.length === 9) handleSearch();
+      if (inputData === "") {
+        setErrorMessage("Preencha algum CEP!");
+        showError();
+        return;
+      }
     }
   }
 
   async function handleSearch() {
     if (inputData === "") {
       setErrorMessage("Preencha algum CEP!");
-      setShowError(true);
+      showError();
       return;
     }
 
@@ -44,7 +57,7 @@ function App() {
       const response = await api.get(`${inputData}/json`);
       if (response.data.erro) {
         setErrorMessage("Ops... erro ao buscar o CEP digitado!");
-        setShowError(true);
+        showError();
         setInputData("");
       } else {
         setCep(response.data);
@@ -52,7 +65,7 @@ function App() {
       }
     } catch {
       setErrorMessage("Não foi possível realizar a busca!");
-      setShowError(true);
+      showError();
       setInputData("");
     }
   }
@@ -75,6 +88,7 @@ function App() {
       });
 
     setInputData(e.target.value);
+    hideMsg();
   }
 
   return (
@@ -95,7 +109,7 @@ function App() {
           <FiSearch size={25} color="#FFF" />
         </button>
 
-        {showError && <div className="error-message">{errorMessage}</div>}
+        {showErrorMsg && <div className="error-message">{errorMessage}</div>}
       </div>
 
       {Object.keys(cep).length > 0 && (
