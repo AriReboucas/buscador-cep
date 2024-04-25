@@ -1,9 +1,11 @@
-import "./styles.css";
+import { useEffect, useState } from "react";
 import ReactGA from "react-ga4";
-import api from "./services/api";
 import { IMaskInput } from "react-imask";
 import { FiSearch } from "react-icons/fi";
-import { useEffect, useState } from "react";
+
+import api from "./services/api";
+
+import "./styles.css";
 
 function App() {
   const [cep, setCep] = useState({});
