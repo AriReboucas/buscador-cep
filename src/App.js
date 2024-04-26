@@ -3,6 +3,7 @@ import ReactGA from "react-ga4";
 import { IMaskInput } from "react-imask";
 import { FiSearch } from "react-icons/fi";
 import { RiCloseFill } from "react-icons/ri";
+import packageJson from "../package.json";
 
 import api from "./services/api";
 
@@ -132,7 +133,10 @@ function App() {
         </main>
       )}
 
-      <footer>Desenvolvido por: Ari Rebouças Dev</footer>
+      <footer>
+        <p>Versão: {packageJson.version}</p>
+        <p>Desenvolvido por: Ari Rebouças</p>
+      </footer>
     </div>
   );
 }
