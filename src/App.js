@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import ReactGA from "react-ga4";
 import { IMaskInput } from "react-imask";
 import { FiSearch } from "react-icons/fi";
+import { RiCloseFill } from "react-icons/ri";
 
 import api from "./services/api";
 
@@ -91,6 +92,10 @@ function App() {
     hideMsg();
   }
 
+  function handleClose() {
+    setCep({});
+  }
+
   return (
     <div className="container">
       <h1 className="title">Buscador CEP</h1>
@@ -114,6 +119,9 @@ function App() {
 
       {Object.keys(cep).length > 0 && (
         <main className="main">
+          <button className="buttonClose" onClick={handleClose}>
+            <RiCloseFill size={35} />
+          </button>
           <h2>CEP: {cep.cep}</h2>
           <span>{cep.logradouro}</span>
           <span>Complemento: {cep.complemento}</span>
