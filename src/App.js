@@ -131,6 +131,8 @@ function App() {
           </span>
         </main>
       )}
+
+      <footer>Desenvolvido por: Ari Rebouças Dev</footer>
     </div>
   );
 }
