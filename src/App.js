@@ -137,7 +137,12 @@ function App() {
         <p>Versão: {packageJson.version}</p>
         <p>
           Desenvolvido por:{" "}
-          <a className="dev" href="https://github.com/AriReboucas">
+          <a
+            className="dev"
+            href="https://github.com/AriReboucas"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             Ari Rebouças
           </a>
         </p>
